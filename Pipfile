@@ -9,6 +9,7 @@ verify_ssl = true
 pandas = "*"
 numpy = "*"
 notebook = "*"
+pandoc = "*"
 
 [requires]
 python_version = "3.7"
