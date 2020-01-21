@@ -40,7 +40,7 @@ sudo yum -y install epel-release
 ```
 
 ``` bash
-sudo yum install git gcc zlib-devel bzip2-devel readline-devel sqlite-devel openssl-devel
+sudo yum -y install epel-release git gcc zlib-devel bzip2-devel readline-devel sqlite-devel openssl-devel
 ```
 
 ## Install pyenv
@@ -109,23 +109,25 @@ To activate and use python 3.7.2:
 pyenv shell 3.7.2
 ```
 
+This will take a few minutes becuase it is downlaoding files and then compiling them for use on the Centos 7 server.  Compilation is an expensive and time consuming process.
+
+Now check to see that the pyenv shell is using the corretc version of python and pip.
+
+``` bash
+pyenv exec python --version
+```
+
+``` bash
+pyenv exec pip --version
+```
+
 Now you see we are using python 3.7.2 and the later version of pip.  We first need to install pipenv.
 
 ``` bash
 pyenv exec pip install pipenv
 ```
 
-Now check the versions python and pip.  Notice that python is listed as 3.7.2 and pip is a much later version.
-
-``` bash
-python --version
-```
-
-``` bash
-pip --version
-```
-
-Use the git Repo for the Course
+## Use the git Repo for the Course
 
 Now we will make a directory to hold our work and virtual envrionment.
 
@@ -158,6 +160,16 @@ pipenv shell
 ```
 
 This activates the new environment.  Now all python work will use the packages and versions installed into this virtual environment.
+
+Let's first look at the version numbers again. Note the version numbers are for python 3.7.2.
+
+``` bash
+python --version
+```
+
+``` bash
+pip --version
+```
 
 If you need to add a python package not already installed:
 
@@ -202,3 +214,6 @@ To install packages needed for the work, you can add more later.
 ``` bash
 pipenv install notebook numpy pandas
 ```
+
+
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDiVfihcGOCPAsY1l2hNKwbAq3A88FQ5HFaz/8HturQj4M14drsMNqWcc9F0dN65+g6ni4m2ziboQDo1QyvYVqvEgg++P5vgWb7VrUqJJ6tOi0rmsZ2KW9luXb4clpO1GaxPbcp3IGZHZv4FoiRv045ksWPQ8RljTMXu+CBRTGtgcBEgt7ABla7aRrpbtou6QRKPmVXnUvYyqJLeCTJ5rDpLo13s7NE+NJ6vANPIw5swgoYj5xUXPsL9WpTxMGgx6y6IOZ7rNi9gzc7dzHvON1jCWcaIICwahmQKTZEzwm7Cj8fosjUiYdDKVA8+lAi65z8JmuOWREEvxldLTF5BCZSwOOX6m4a9VcK+2Iac768Umyxm+phNuo+42xlF3ReEKo2hd9TzXeFPLPH8mXdjmEGYM6fLLELGWW95otx7QygSTya1O2oJchvZRQj0V5eifRJWR8viebA3DGkeU9WBnfIPQCvaQl2omOHLFkcvJri3dxff+O8fGda7cpYD52w3Q3KCdW078dq/aKmlJPUbmSkz82xO5lUAMBdgyEo8yumxCLcgWRcp7W7j1vSztDU11pAQHp7rLA1lgt6IOdpVET3N3p1DVmFiFQBdKmYULATdfjguOfUQfyuvrsRpWIiZ5p0I5GNq+l3bwACpf5a9rlCI32EOz/cmDQhEeYKkmV4DQ== larry.fritts@linuxacademy.com
