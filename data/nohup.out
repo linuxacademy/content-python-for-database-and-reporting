@@ -1,0 +1,14 @@
+[I 20:15:25.658 NotebookApp] Serving notebooks from local directory: /home/cloud_user/venv
+[I 20:15:25.658 NotebookApp] The Jupyter Notebook is running at:
+[I 20:15:25.658 NotebookApp] http://localhost:8086/?token=7443d5199f434057dc40f382ca8ffe1588b3b4ac748baff3
+[I 20:15:25.658 NotebookApp]  or http://127.0.0.1:8086/?token=7443d5199f434057dc40f382ca8ffe1588b3b4ac748baff3
+[I 20:15:25.658 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[C 20:15:25.661 NotebookApp] 
+    
+    To access the notebook, open this file in a browser:
+        file:///home/cloud_user/.local/share/jupyter/runtime/nbserver-5058-open.html
+    Or copy and paste one of these URLs:
+        http://localhost:8086/?token=7443d5199f434057dc40f382ca8ffe1588b3b4ac748baff3
+     or http://127.0.0.1:8086/?token=7443d5199f434057dc40f382ca8ffe1588b3b4ac748baff3
+[C 21:12:23.495 NotebookApp] received signal 15, stopping
+[I 21:12:23.496 NotebookApp] Shutting down 0 kernels
