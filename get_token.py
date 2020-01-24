@@ -1,12 +1,3 @@
-token_file = open("nohup.out")
-
-for line in token_file:
-    if line.find("token=") > 0: 
-        print(line[line.find("token=")+6: ])
-        break
-        
-
-
 import subprocess
 import os
 
