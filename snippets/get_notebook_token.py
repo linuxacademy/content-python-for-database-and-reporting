@@ -1,12 +1,15 @@
-import subprocess
-import os
+from os import setpgrp
+from subprocess import Popen
+from time import sleep
 
 # start jupyter notebook server on port 8086
-subprocess.Popen(
-                 ['nohup', 'jupyter', 'notebook', '--no-browser', '--port=8086'],
-                 stdout=open('nohup.out', 'w'),
-                 stderr=open('logfile.log', 'a'),
-                 preexec_fn=os.setpgrp)
+Popen(
+    ['nohup', 'jupyter', 'notebook', '--no-browser', '--port=8086'],
+    stdout=open('nohup.out', 'w'),
+    preexec_fn=setpgrp)
+
+# wait for above process to finish
+sleep(1)
 
 # write jupyter server token to screen
 token_file = open("nohup.out")
