@@ -1,39 +1,38 @@
-# from os import setpgrp
-# from subprocess import Popen, PIPE
-
-# p = Popen(
-#         ['nohup', 'jupyter', 'notebook', '--no-browser', '--port=8086'],
-#         stdout=PIPE,stderr=PIPE, preexec_fn=setpgrp)
-
-# out, err = p.communicate()
-# print ("cat returned code = %d" % p.returncode)
-# print ("cat output:\n\n%s\n\n" % out)
-# print ("cat errors:\n\n%s\n\n" % err)
-
-# # token_file = open("logfile.log")
-
-# # for line in token_file:
-# #     if line.find("token=") > 0:
-# #         print(line[line.find("token=")+6: ])
-# #         break
-
-import subprocess
 import os
-import time
+import psutil
+from subprocess import Popen
+from time import sleep
 
-subprocess.Popen(['nohup', 'jupyter', 'notebook', '--no-browser', '--port=8086'],
-                 stdout=open('nohup.out', 'w'),
-                 stderr=open('logfile.log', 'a'),
-                 preexec_fn=os.setpgrp
-                 )
-time.sleep(1)
-try:
-    token_file = open("nohup.out")
-except IOError:
-    print("File not accessible")
+# kill any jupyter notebook processes
+for proc in psutil.process_iter():
+    if proc.name() == 'jupyter-noteboo':
+        proc.kill()
 
+# delete old nohup.out if exists
+if os.path.exists("nohup.out"):
+    os.remove("nohup.out")
+
+# start jupyter notebook server on port 8086
+Popen(
+    ['nohup', 'jupyter', 'notebook', '--no-browser', '--port=8086'],
+    stdout=open('nohup.out', 'w'),
+    preexec_fn=os.setpgrp)
+
+# wait for above process to finish
+sleep(3)
+
+# write jupyter server token to screen
+token_file = open("nohup.out")
 
 for line in token_file:
     if line.find("token=") > 0:
         print(line[line.find("token=")+6: ])
         break
+
+token_file.close()
+
+
+
+
+
+
