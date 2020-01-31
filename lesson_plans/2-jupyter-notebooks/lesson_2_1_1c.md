@@ -17,11 +17,7 @@ This is the same information as in the PDF:
 To activate the virtual environment:
 
 ``` bash
-cd /home/cloud_user/python_for_database_reporting
-```
-
-``` bash
-pipenv shell
+conda activate python_data_course
 ```
 
 To start the server run the following:
@@ -30,13 +26,15 @@ To start the server run the following:
 python get_notebook_token.py
 ```
 
-_This is a simple script that starts the jupyter notebook server and sets it to continue to run outside of the terminal:_
+__This is a simple script that starts the jupyter notebook server and sets it to continue to run outside of the terminal.__
 
 _```nohup jupyter notebook --no-browser --port=8086```_
 
+_I have selected port 8086 but the actual port number is not important as long as you know what it is and it does not conflict with other running services._
+
 _It then searches the resulting text file `nohup.out` to find and print the token._
 
-**On the terminal is a token, you must copy this and save it to a text file on your local machine.**
+**On the terminal is a token, please copy this and save it to a text file on your local machine.**
 
 ### On Your Local Machine
 
@@ -49,11 +47,15 @@ ssh -N -L localhost:8087:localhost:8086 cloud_user@<the public IP address of the
 _-N indicates that there will be no remote commands_
 _-L maps the local port to the remote port
 
+_I have selected port 8087 for the local port but the actual port number is not important as long as you know what it is and it does not conflict with other running services._
+
+It will ask you for your password, this is the password you use to login to the Playground remote server.
+
 **Leave this terminal open, it will appear nothing has happened, but it must remain open while you use the Jupyter Notebook server in this session.**
 
 In the browser of your choice enter the following address:
 
-**```http://localhost:8087```**
+```http://localhost:8087```
 
 This will open a Jupyter Notebook site that asks for the token you copied from the remote server.
 

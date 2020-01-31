@@ -14,13 +14,13 @@ This is the same information as in the PDF:
 
 ## Create a Playground server
 
-We are going to create a simple Centos7 server and install what we need as we go along.  Choosing **`Centos 7`** will install a basic Centos 7 server.
+We are going to create a simple Centos7 server and install what we need as we go along.  Choosing **`Ubuntu 18.10 Bionic Beaver LTS`** will install a basic Ubuntu 18 server.
 
 ### Playground Server Settings
 
-Choose the following settings in making your Playground Server. You may choose a different tag if desired.
+Choose the following settings in making your Playground Server. **_You may choose a different tag if desired._**
 
-- Distribution: Centos7
+- Distribution: Ubuntu 18.04 Bionic Beaver LTS
 - Zone: North America
 - Size: Micro
 - Tag: Using Python for Database Operations and Reporting
@@ -41,208 +41,173 @@ ssh cloud_user@<the public IP address shown>
 - Enter the New Password again, enter **`your new password`**
 - **Don't forget your new password!**  You will use this new password when you log-in to your Playground server.
 
-## Install Required Packages
+## Update Ubuntu
 
-We need to install git and several other packages that will allow us to create python virtual environments.
-
-We will be using pyenv to allow us to easily install various python versions as we need.
+Let's make sure we have all security patches installed on the server:
 
 ``` bash
-sudo yum -y install epel-release git gcc zlib-devel bzip2-devel readline-devel sqlite-devel openssl-devel
-
+  sudo apt update && sudo apt upgrade -y
 ```
 
-### Install pyenv
+During this process an information screen will pop up that looks like this:
 
-Clone the repo.
+![alt text](https://github.com/linuxacademy/content-python-for-database-and-reporting/blob/master/data/screenshots/screenshot_grub_ok.png?raw=true)
+
+Just select `enter` or `return`.
+
+Then another information screen will pop up that looks like this:
+
+![alt text](https://github.com/linuxacademy/content-python-for-database-and-reporting/blob/master/data/screenshots/screenshot_grub_selection.png?raw=true)
+
+Now select `space` and then `return/enter`.
+
+We need to install one more package needed for our work.  This package is needed to later turn our notebooks to PDF.
 
 ``` bash
-git clone https://github.com/pyenv/pyenv.git $HOME/.pyenv
+sudo apt install -y texlive-xetex
 ```
 
-After installing **`pyenv`** we need to update the **`.bashrc`** file to use it.
+## Installing Anaconda
+
+We are using [Anaconda](https://www.anaconda.com/) for this course.  Anaconda is a data science and machine learning platform based on Python that can also be used to write standard Python apps also.  We will be using it because it makes the use of Jupyter Notebooks very easy.  The work with the Jupyter Notebooks could be done without it but it suggested by [Project Jupyter](https://jupyter.org/) that using Anaconda is the best solution.
+
+To install, we first need to download the Anaconda package
 
 ``` bash
-nano ~/.bashrc
+cd /tmp
+curl -O https://repo.anaconda.com/archive/Anaconda3-2019.03-Linux-x86_64.sh
 ```
 
-Copy and paste the following to the end of your **`.bashrc`** file
+We should check that the package we downloaded is not corrupt:
 
 ``` bash
-## pyenv configs
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-
-if command -v pyenv 1>/dev/null 2>&1; then
-  eval "$(pyenv init -)"
-fi
+  sha256sum Anaconda3-2019.03-Linux-x86_64.sh
 ```
 
-When you have copied the above to the .bashrc file, press CTRL-X and then select **`y`**.
+The result should be:
 
-Restart your bash terminal to use the changes made using
+- 45c851b7497cc14d5ca060064394569f724b67d9b5f98a926ed49b834a6bb73a  Anaconda3-2019.03-Linux-x86_64.sh
+
+If the checksum is not the same, if the checksums do not match, it indicates the file may be corrput in some way.  **Please stop installation of the Playground server.** **_Please ask for help from Linux Academy before proceeding._**
+
+If the checksums do match being the installation of Anaconda:
+
+``` bash
+bash Anaconda3-2019.03-Linux-x86_64.sh
+```
+Near the beginning of the install you will get this message:
+
+``` text
+Welcome to Anaconda3 2019.03
+
+In order to continue the installation process, please review the license
+agreement.
+Please, press ENTER to continue
+>>>
+```
+
+After reading the license agreement, you will get the message:
+
+``` text
+Do you approve the license terms? [yes|no]
+```
+
+if you enter `yes` then this message will appear:
+
+``` text
+Anaconda3 will now be installed into this location:
+/home/sammy/anaconda3
+
+  - Press ENTER to confirm the location
+  - Press CTRL-C to abort the installation
+  - Or specify a different location below
+
+[/home/sammy/anaconda3] >>>
+```
+
+Please make the appropriate selection.
+
+After installation is complete, this message will appear:
+
+``` text
+installation finished.
+Do you wish the installer to prepend the Anaconda3 install location
+to PATH in your /home/sammy/.bashrc ? [yes|no]
+[no] >>> 
+```
+
+Please enter ```yes```.  This will update you ~/.bashrc file so that you can use `conda` on the command.
+
+Move back to your directory:
+
+``` bash
+cd ~
+```
+
+We need to restart the shell to include the changes made:
 
 ``` bash
 source ~/.bashrc
 ```
 
-## Installing a Python 3 Version
-
-It is important to use a Python 3 version for our work; Python 2 is no longer supported.  Centos 7 has not updated from Python 2.  As a result we will use pyenv to install a Python 3 version.  
-
-You may pick the Python 3 version you want to use.  If you want to use the latest Python 3 it is version **`3.8.1`** at the time of this writing. If you want to match the Python 3 version in our labs, then use version **`3.7.2`**; this is the version we will be using in the labs and for our lessons.  You can also use the same version as you use at work. However, caution is called for, if the version used at work is less than **`3.6`**, you will encounter errors in the Jupyter Notebooks. (We will be using **`f-strings`** introduced in **`3.6`**. As a result, an earlier version will result in errors.)
-
-Let's  determine the Python version that comes with Centos 7. Note the version numbers when you enter the following commands:
+You will see a `(base)` prepended to your command line.  That indicates that the base conda virtual environment has been activated.  This will happen everytime we start the terminal.  We don't want that behavior; to turn it off:
 
 ``` bash
-python --version
+conda config --set auto_activate_base false
 ```
 
+Now let's update the conda base code:
 
 ``` bash
-pip --version
+conda update -n base -c defaults conda
 ```
 
-Now lets install the Python version we want, namely `3.7.2`.
- **Please note: This may take a few minutes; it downloads the files and compiles it for this machine. Compiling a program can take some time.**
+## Create a conda Environment For This Course
+
+We want to create a conda virtual environment for this course using Python 3.  I am naming this environment `python_data_course` using the `-n` flag.  You may choose a different virtual envornment name.  `python=3` tells the virtual environment to use the lastest version of Python 3 installed in conda.
 
 ``` bash
-pyenv install 3.7.2
+conda create -n python_data_course python=3
 ```
 
-Let's first look at the version numbers again. Note the version numbers have not changed, pyenv installed python 3.7.2 but it is not activated for use.
+You will need to activate this virtual environment before you work on the code in the repo we are about to clone.  To do so:
 
 ``` bash
-python --version
-```
-
-``` bash
-pip --version
-```
-
-To set pyenv to use Python 3.7.2:
-
-``` bash
-pyenv shell 3.7.2
-```
-
-To use the pyenv Python version we use **`exec`**, this stands for execute:
-
-``` bash
-pyenv exec python --version
-```
-
-``` bash
-pyenv exec pip --version
-```
-
-Now you see we are using python 3.7.2 and the later version of pip.  
-
-Let's update pip to the latest version:
-
-``` bash
-pyenv exec pip install --upgrade pip
-```
-
-Now we need to install pipenv.
-
-``` bash
-pyenv exec pip install --user pipenv
-```
-
-## Use the git Repo for the Course to Practice What We Do in Lessons
-
-Now we will make a directory to hold our work and virtual envrionment.
-
-``` bash
-mkdir python_for_database_reporting
-```
-
-**You change the above name to something you like if desired.**
-
-``` bash
-cd python_for_database_reporting
-```
-
-Now we need to clone the git repo for the course
-
-``` bash  
-git clone https://github.com/linuxacademy/content-python-for-database-and-reporting.git .
-```
-
-To create the virtual environment and install the packages we will use:
-**Please note: you can use **`ls`** to verify there is a **`Pipfile`** in the directory.
-
-``` bash
-pipenv install
-```
-
-To activate your new virtual environment:
-
-``` bash
-pipenv shell
-```
-
-This activates the new environment.  Now all python work will use the packages and versions installed into this virtual environment.
-
-Let's first look at the version numbers again. Note the version numbers are for python 3.7.2.
-
-``` bash
-python --version
-```
-
-``` bash
-pip --version
-```
-
-If you need to add a python package not already installed:
-
-``` bash
-pipenv install <package-name>
+conda activate python_data_course
 ```
 
 To leave the virtual environment:
 
 ``` bash
-exit
+conda deactivate
 ```
 
-## (OPTIONAL) Create an Environment for Your Practice
+**Please note: You will recieve errors if you try to run the code without activated the virtual environment.  If you do encounter errors when starting work, please check that you have activated the virtual environment.**
 
-**You only need to do this is you would like to practice using pyenv and pipenv and/or practice with your own data and Jupyter notebooks.
 
-Create a directory for your work.
+## Use the git Repo for the Course to Practice What We Do in Lessons
+
+
+Now we will make a directory to hold the github repo.
 
 ``` bash
-mkdir <directory name>
+mkdir python_data_course
 ```
+
+**You change the above name to something you like if desired.**
+
+Move to the directory, activate the virtual environment (if it is not active, look for the parenthesis statement prepended to your command line, it does not hurt to rn the activate command more than once) and install two packages we need.
 
 ``` bash
-cd <directory name>
+cd python_for_database_reporting
+conda activate python_data_course
+conda install jupyter psutil
 ```
 
-Now we need to create a virtual environment to hold the work/practice you will do. If you use a version other then **`3.7.2`** you will be informed that the version is not installed and ask if you want **`pyenv`** to install it.  You should type **`yes`**.
+To clone the repo:
 
 ``` bash  
-pipenv --python 3.7.2 # or whatver version you choose
-```
-
-To activate your new virtual environment:
-
-``` bash
-pipenv shell
-```
-
-Now install the basic required packages:
-
-``` bash
-pipenv install notebook numpy pandas
-```
-
-To install packages later:
-
-``` bash
-pipenv install <packages name(s)>
+git clone https://github.com/linuxacademy/content-python-for-database-and-reporting.git .
 ```
 
 ## Tags
