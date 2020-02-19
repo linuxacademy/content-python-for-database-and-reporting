@@ -3,33 +3,37 @@ import psutil
 from subprocess import Popen
 from time import sleep
 
-# kill any jupyter notebook processes
-for proc in psutil.process_iter():
-    if proc.name() == 'jupyter-noteboo':
-        proc.kill()
+no_token = True
 
-# delete old nohup.out if exists
-if os.path.exists("nohup.out"):
-    os.remove("nohup.out")
+while no_token:
+    # kill any jupyter notebook processes
+    for proc in psutil.process_iter():
+        if proc.name() == 'jupyter-noteboo':
+            proc.kill()
 
-# start jupyter notebook server on port 8086
-Popen(
-    ['nohup', 'jupyter', 'notebook', '--no-browser', '--port=8086'],
-    stdout=open('nohup.out', 'w'),
-    preexec_fn=os.setpgrp)
+    # delete old nohup.out if exists
+    if os.path.exists("nohup.out"):
+        os.remove("nohup.out")
 
-# wait for above process to finish
-sleep(3)
+    # start jupyter notebook server on port 8086
+    Popen(
+        ['nohup', 'jupyter', 'notebook', '--no-browser', '--port=8086'],
+        stdout=open('nohup.out', 'w'),
+        preexec_fn=os.setpgrp)
 
-# write jupyter server token to screen
-token_file = open("nohup.out")
+    # wait for above process to finish
+    sleep(3)
 
-for line in token_file:
-    if line.find("token=") > 0:
-        print(line[line.find("token=")+6: ])
-        break
+    # write jupyter server token to screen
+    token_file = open("nohup.out")
 
-token_file.close()
+    for line in token_file:
+        if line.find("token=") > 0:
+            print(line[line.find("token=")+6: ])
+            no_token = False
+            break
+
+    token_file.close()
 
 
 
