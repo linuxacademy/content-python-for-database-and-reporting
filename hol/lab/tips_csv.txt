@@ -1,4 +1,4 @@
-'weekday,meal_type,wait_staff,party_size,meal_total,tip
+weekday,meal_type,wait_staff,party_size,meal_total,tip
 Saturday,Dinner,Marcia,2,100.64,16.23
 Friday,Dinner,Marcia,2,109.84,5.99
 Friday,Lunch,Jan,4,90.5,22.04
