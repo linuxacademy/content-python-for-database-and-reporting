@@ -1,0 +1,7 @@
+"name","owner","type","breed","color","age","weight","gender","health issues","indoor/outboor","vaccinated"
+"Dexter","Johnsons","dog","shiba inu","red sesame",1.5,35,"m",False,"both",True
+"Alfred","Johnsons","cat","mix","tuxedo",4,12,"m",True,"indoor",True
+"Petra","Smith","cat","ragdoll","calico",6,None,"f",False,"both",True
+"Ava","Smith","dog","mix","blk/wht",12,32,"f",True,"both",False
+"Schroder","Brown","cat","mix","orange",13,15,"m",False,"indoor",True
+"Blackbeard","Brown","bird","parrot","multi",5,3,"f",False,"indoor",None
